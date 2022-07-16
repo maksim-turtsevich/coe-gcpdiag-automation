@@ -1,0 +1,194 @@
+[1mgcpdiag 🩺  0.55(B[m
+
+Starting lint inspection (project: fp-engineering-staging)...
+
+🔎  [33mapigee/ERR/2022_001(B[m: Apigee Service Agent permissions
+[A[K🔎  [33mapigee/WARN/2021_001(B[m: Every environment group contains at least one environment.
+[A[K🔎  [33mcomposer/ERR/2022_001(B[m: Composer Service Agent permissions
+[WARNING] can't get service account service-948283211695@trifacta-gcloud-prod.iam.gserviceaccount.com: Permission iam.serviceAccounts.get is required to perform this operation on service account projects/-/serviceAccounts/service-948283211695@trifacta-gcloud-prod.iam.gserviceaccount.com. 
+[WARNING] can't get service account svc-cfi-app@fp-engineering-production.iam.gserviceaccount.com: Permission iam.serviceAccounts.get is required to perform this operation on service account projects/-/serviceAccounts/svc-cfi-app@fp-engineering-production.iam.gserviceaccount.com. 
+[WARNING] can't get service account svc-sync-environment-data@fp-engineering-production.iam.gserviceaccount.com: Permission iam.serviceAccounts.get is required to perform this operation on service account projects/-/serviceAccounts/svc-sync-environment-data@fp-engineering-production.iam.gserviceaccount.com. 
+[A[K🔎  [33mcomposer/ERR/2022_002(B[m: Composer Environment Service Account permissions
+[WARNING] The resource 'projects/fp-engineering-staging/regions/europe-west1/subnetworks/aet-europewest1-cloud--run--connect-sbnt' was not found 
+[A[K🔎  [33mcomposer/WARN/2021_001(B[m: Composer environment is in RUNNING state
+[A[K🔎  [33mcomposer/WARN/2022_001(B[m: Composer Service Agent permissions for Composer 2.x
+   - fp-engineering-staging                                               [[31mFAIL(B[m]
+     service account: service-948283211695@cloudcomposer-accounts.iam.gserviceaccount.com
+     missing role: roles/composer.ServiceAgentV2Ext
+
+   Verify that the Cloud Composer Service Agent account exists and has the Cloud
+   Composer v2 API Service Agent Extension role on the project.
+
+   https://gcpdiag.dev/rules/composer/WARN/2022_001
+
+🔎  [33mdataproc/BP/2021_001(B[m: Check if logging is enabled : Stackdriver Logging enabled
+[A[K🔎  [33mdataproc/BP/2022_001(B[m: Cloud Monitoring agent is enabled.
+[A[K🔎  [33mdataproc/ERR/2022_002(B[m: Dataproc cluster doesn't use deprecated images
+[A[K🔎  [33mdataproc/WARN/2021_001(B[m: Dataproc cluster is in RUNNING state
+[A[K🔎  [33mgaes/WARN/2022_001(B[m: App Engine Standard versions don't use deprecated runtimes.
+[A[K🔎  [33mgcb/ERR/2022_001(B[m: Cloud Build service account has the cloudbuild.builds.builder role.
+[A[K🔎  [33mgce/BP/2021_001(B[m: Serial port logging is enabled.
+   - fp-engineering-staging/core-app-server-green                         [[31mFAIL(B[m]
+   - fp-engineering-staging/gke-europe-west1-airflow-default-pool-16f90336-2v85 [[31mFAIL(B[m]
+   - fp-engineering-staging/gke-europe-west1-airflow-default-pool-16f90336-jeh0 [[31mFAIL(B[m]
+   - fp-engineering-staging/gke-europe-west1-airflow-default-pool-16f90336-zxhz [[31mFAIL(B[m]
+
+   Serial port output can be often useful for troubleshooting, and enabling
+   serial logging makes sure that you don't lose the information when the VM is
+   restarted. Additionally, serial port logs are timestamped, which is useful to
+   determine when a particular serial output line was printed.
+
+   https://gcpdiag.dev/rules/gce/BP/2021_001
+
+🔎  [33mgce/BP/2021_002(B[m: GCE nodes have an up to date ops agent installed.
+   - fp-engineering-staging/core-app-server-green                         [[31mFAIL(B[m] not installed
+
+   Verify that the ops agent is used by the GCE instances and that the agent is
+   recent enough. If the monitoring agent is found it is recommended to upgrade
+   to the ops agent.  see:
+   https://cloud.google.com/stackdriver/docs/solutions/agents/ops-agent
+
+   https://gcpdiag.dev/rules/gce/BP/2021_002
+
+🔎  [33mgce/ERR/2021_001(B[m: Managed instance groups do not report scaleup failures.
+[A[K🔎  [33mgce/ERR/2021_002(B[m: OS Config service account has the required permissions.
+[A[K🔎  [33mgce/ERR/2021_003(B[m: Google APIs service agent has the Editor role.
+[A[K🔎  [33mgce/ERR/2021_004(B[m: Serial logs don't contain Secure Boot error messages
+[A[K🔎  [33mgce/ERR/2021_005(B[m: Serial logs don't contain mount error messages
+[A[K🔎  [33mgce/WARN/2021_001(B[m: GCE instance service account permissions for logging.
+[A[K🔎  [33mgce/WARN/2021_002(B[m: GCE nodes have good disk performance.
+[A[K🔎  [33mgce/WARN/2021_003(B[m: GCE instance service account permissions for monitoring.
+[A[K🔎  [33mgce/WARN/2021_004(B[m: Serial logs don't contain disk full messages
+[A[K🔎  [33mgce/WARN/2021_005(B[m: Serial logs don't contain out-of-memory messages
+   - fp-engineering-staging/gke-gke-1-pool-767d94e0d11d909b-84c11a91-3q9q [[31mFAIL(B[m]
+     There are messages indicating that OS is running out of memory for gke-gke-1-pool-767d94e0d11d909b-84c11a91-3q9q
+     2022-07-16 11:26:24+00:00: "[332841.250345] Memory cgroup out of memory: Killed process 1227699 (otelsvc) total-vm:751468kB, anon-rss:50156kB, file-rss:35324kB, shmem-rss:0kB, UID:1000 pgtables:260kB oom_score_adj:-997\r\n"
+   - fp-engineering-staging/gke-gke-1-pool-767d94e0d11d909b-84c11a91-l0gw [[31mFAIL(B[m]
+     There are messages indicating that OS is running out of memory for gke-gke-1-pool-767d94e0d11d909b-84c11a91-l0gw
+     2022-07-16 12:17:11+00:00: "[335898.114572] Memory cgroup out of memory: Killed process 1281799 (prometheus) total-vm:4783284kB, anon-rss:1020052kB, file-rss:31900kB, shmem-rss:0kB, UID:65534 pgtables:2420kB oom_score_adj:938\r\n"
+   - fp-engineering-staging/gke-gke-1-pool-767d94e0d11d909b-84c11a91-ppn4 [[31mFAIL(B[m]
+     There are messages indicating that OS is running out of memory for gke-gke-1-pool-767d94e0d11d909b-84c11a91-ppn4
+     2022-07-16 12:20:21+00:00: "[336085.627960] Memory cgroup out of memory: Killed process 1256047 (otelsvc) total-vm:751468kB, anon-rss:49784kB, file-rss:35196kB, shmem-rss:0kB, UID:1000 pgtables:272kB oom_score_adj:-997\r\n"
+
+   The messages: "Out of memory: Kill process" / "sacrifice child" / "Killed
+   process" / "Memory cgroup out of memory" in serial output usually indicate
+   that a Linux instance is under memory pressure.
+
+   https://gcpdiag.dev/rules/gce/WARN/2021_005
+
+🔎  [33mgce/WARN/2021_006(B[m: Serial logs don't contain "Kernel panic" messages
+[A[K🔎  [33mgce/WARN/2021_007(B[m: Serial logs don't contain "BSOD" messages
+[A[K🔎  [33mgce/WARN/2022_001(B[m: GCE connectivity: IAP service can connect to SSH/RDP port on instances.
+   - fp-engineering-staging/gke-europe-west1-airfl-scheduler-temp-d27a6077-jr1y [[31mFAIL(B[m]
+     connections from 35.235.240.0/20 to tcp:22 blocked by None (instance: gke-europe-west1-airfl-scheduler-temp-d27a6077-jr1y)
+   - fp-engineering-staging/gke-europe-west1-airflow-default-pool-16f90336-2v85 [[31mFAIL(B[m]
+     connections from 35.235.240.0/20 to tcp:22 blocked by None (instance: gke-europe-west1-airflow-default-pool-16f90336-2v85)
+   - fp-engineering-staging/gke-europe-west1-airflow-default-pool-16f90336-jeh0 [[31mFAIL(B[m]
+     connections from 35.235.240.0/20 to tcp:22 blocked by None (instance: gke-europe-west1-airflow-default-pool-16f90336-jeh0)
+   - fp-engineering-staging/gke-europe-west1-airflow-default-pool-16f90336-zxhz [[31mFAIL(B[m]
+     connections from 35.235.240.0/20 to tcp:22 blocked by None (instance: gke-europe-west1-airflow-default-pool-16f90336-zxhz)
+   - fp-engineering-staging/gke-gke-1-pool-767d94e0d11d909b-84c11a91-3q9q [[31mFAIL(B[m]
+     connections from 35.235.240.0/20 to tcp:22 blocked by None (instance: gke-gke-1-pool-767d94e0d11d909b-84c11a91-3q9q)
+   - fp-engineering-staging/gke-gke-1-pool-767d94e0d11d909b-84c11a91-hw22 [[31mFAIL(B[m]
+     connections from 35.235.240.0/20 to tcp:22 blocked by None (instance: gke-gke-1-pool-767d94e0d11d909b-84c11a91-hw22)
+   - fp-engineering-staging/gke-gke-1-pool-767d94e0d11d909b-84c11a91-l0gw [[31mFAIL(B[m]
+     connections from 35.235.240.0/20 to tcp:22 blocked by None (instance: gke-gke-1-pool-767d94e0d11d909b-84c11a91-l0gw)
+   - fp-engineering-staging/gke-gke-1-pool-767d94e0d11d909b-84c11a91-ppn4 [[31mFAIL(B[m]
+     connections from 35.235.240.0/20 to tcp:22 blocked by None (instance: gke-gke-1-pool-767d94e0d11d909b-84c11a91-ppn4)
+   - fp-engineering-staging/gke-gke-1-pool-db-6392ec1839161324-4b20b3b1-swjj [[31mFAIL(B[m]
+     connections from 35.235.240.0/20 to tcp:22 blocked by None (instance: gke-gke-1-pool-db-6392ec1839161324-4b20b3b1-swjj)
+
+   Traffic from the IP range 35.235.240.0/20 to VM instances is necessary for
+   IAP TCP forwarding to establish an encrypted tunnel over which you can
+   forward SSH, RDP traffic to VM instances.
+
+   https://gcpdiag.dev/rules/gce/WARN/2022_001
+
+🔎  [33mgce/WARN/2022_002(B[m: Instance groups named ports are using unique names.
+[A[K🔎  [33mgce/WARN/2022_003(B[m: GCE VM instances quota is not near the limit.
+[A[K🔎  [33mgcf/WARN/2021_001(B[m: Cloud Functions don't use deprecated runtimes.
+[A[K🔎  [33mgcs/BP/2022_001(B[m: Buckets are using uniform access
+[A[K🔎  [33mgke/BP/2021_001(B[m: GKE system logging and monitoring enabled.
+[A[K🔎  [33mgke/BP/2022_001(B[m: GKE clusters are regional.
+   - fp-engineering-staging/europe-west1-b/europe-west1-airflow-1-d16554f8-gke [[31mFAIL(B[m]
+      is not regional
+   - fp-engineering-staging/europe-west1-b/gke-1                          [[31mFAIL(B[m]
+      is not regional
+
+   The availability of regional clusters (both control plane and nodes) is
+   higher for regional clusters as they are replicated across zones in the
+   region. It is recommended to use regional clusters for the production
+   workload.
+
+   https://gcpdiag.dev/rules/gke/BP/2022_001
+
+🔎  [33mgke/BP/2022_002(B[m: GKE clusters are using unique subnets.
+[A[K🔎  [33mgke/BP/2022_003(B[m: GKE cluster is not near to end of life
+[A[K🔎  [33mgke/ERR/2021_001(B[m: GKE nodes service account permissions for logging.
+[A[K🔎  [33mgke/ERR/2021_002(B[m: GKE nodes service account permissions for monitoring.
+[A[K🔎  [33mgke/ERR/2021_003(B[m: App-layer secrets encryption is activated and Cloud KMS key is enabled.
+[A[K🔎  [33mgke/ERR/2021_004(B[m: GKE nodes aren't reporting connection issues to apiserver.
+[A[K🔎  [33mgke/ERR/2021_005(B[m: GKE nodes aren't reporting connection issues to storage.google.com.
+[A[K🔎  [33mgke/ERR/2021_006(B[m: GKE Autoscaler isn't reporting scaleup failures.
+[A[K🔎  [33mgke/ERR/2021_007(B[m: GKE service account permissions.
+[A[K🔎  [33mgke/ERR/2021_008(B[m: Google APIs service agent has Editor role.
+[A[K🔎  [33mgke/ERR/2021_009(B[m: Version skew between cluster and node pool.
+[A[K🔎  [33mgke/ERR/2021_010(B[m: Check internal peering forwarding limits which affect GKE.
+[A[K🔎  [33mgke/ERR/2021_011(B[m: ip-masq-agent not reporting errors
+[A[K🔎  [33mgke/ERR/2021_012(B[m: Node pool service account exists and not is disabled.
+[A[K🔎  [33mgke/ERR/2021_013(B[m: GKE cluster firewall rules are configured.
+[A[K🔎  [33mgke/ERR/2021_014(B[m: GKE masters of private clusters can reach the nodes.
+[A[K🔎  [33mgke/ERR/2021_015(B[m: GKE connectivity: node to pod communication.
+[A[K🔎  [33mgke/ERR/2022_001(B[m: GKE connectivity: pod to pod communication.
+[A[K🔎  [33mgke/ERR/2022_002(B[m: GKE nodes of private clusters can access Google APIs and services.
+[A[K🔎  [33mgke/ERR/2022_003(B[m: GKE connectivity: load balancer to node communication (ingress).
+[A[K🔎  [33mgke/SEC/2021_001(B[m: GKE nodes don't use the GCE default service account.
+[A[K🔎  [33mgke/WARN/2021_001(B[m: GKE master version available for new clusters.
+[A[K🔎  [33mgke/WARN/2021_002(B[m: GKE nodes version available for new clusters.
+[A[K🔎  [33mgke/WARN/2021_003(B[m: GKE cluster size close to maximum allowed by pod range
+[A[K🔎  [33mgke/WARN/2021_004(B[m: GKE system workloads are running stable.
+   - fp-engineering-staging/europe-west1-b/gke-1                          [[31mFAIL(B[m]
+     restarting: gke-metrics-agent
+
+   GKE includes some system workloads running in the user-managed nodes which
+   are essential for the correct operation of the cluster. We verify that
+   restart count of containers in one of the system namespaces (kube-system,
+   istio-system, custom-metrics) stayed stable in the last 24 hours.
+
+   https://gcpdiag.dev/rules/gke/WARN/2021_004
+
+🔎  [33mgke/WARN/2021_005(B[m: GKE nodes have good disk performance.
+   - fp-engineering-staging/europe-west1-b/gke-1                          [[31mFAIL(B[m]
+     disk latency >100ms (1 min. avg., within 3 days): 
+     . gke-gke-1-pool-db-6392ec1839161324-4b20b3b1-swjj (65 out of 4320 minutes bad)
+
+   Disk performance is essential for the proper operation of GKE nodes. If too
+   much IO is done and the disk latency gets too high, system components can
+   start to misbehave. Often the boot disk is a bottleneck because it is used
+   for multiple things: the operating system, docker images, container
+   filesystems (usually including /tmp, etc.), and EmptyDir volumes.
+
+   https://gcpdiag.dev/rules/gke/WARN/2021_005
+
+🔎  [33mgke/WARN/2021_006(B[m: GKE nodes aren't reporting conntrack issues.
+[A[K🔎  [33mgke/WARN/2021_007(B[m: GKE nodes have enough free space on the boot disk.
+[A[K🔎  [33mgke/WARN/2021_008(B[m: Istio/ASM version not deprecated nor close to deprecation in GKE
+[A[K🔎  [33mgke/WARN/2021_009(B[m: GKE nodes use a containerd image.
+   - fp-engineering-staging/europe-west1-b/gke-1/pool-jupyter-deba010b99452b57 [[31mFAIL(B[m]
+     nodepool is using the deprecated Docker container runtime (nodepool version: 1.23.6-gke.2200, image type: COS)
+   - fp-engineering-staging/europe-west1-b/gke-1/pool-db-6392ec1839161324 [[31mFAIL(B[m]
+     nodepool is using the deprecated Docker container runtime (nodepool version: 1.23.6-gke.2200, image type: COS)
+
+   Node images with the Docker runtime are deprecated. Switch to the containerd
+   image types.
+
+   https://gcpdiag.dev/rules/gke/WARN/2021_009
+
+🔎  [33mgke/WARN/2022_001(B[m: GKE clusters with workload identity are regional.
+[A[K🔎  [33mgke/WARN/2022_002(B[m: GKE metadata concealment is not in use
+[A[K🔎  [33mgke/WARN/2022_003(B[m: GKE service account permissions to manage project VPC firewall rules.
+[A[K🔎  [33mgke/WARN/2022_004(B[m: Cloud Logging API enabled when GKE logging is enabled
+[A[K🔎  [33mgke/WARN/2022_005(B[m: NVIDIA GPU device drivers are installed on GKE nodes with GPU
+[A[K🔎  [33miam/SEC/2021_001(B[m: No service accounts have the Owner role
+[A[K
+Rules summary: 17 skipped, 43 ok, 9 failed
