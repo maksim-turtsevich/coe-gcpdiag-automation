@@ -23,7 +23,7 @@ def generate_rule_with_description(raw_rule_with_description):
     return final_rule_with_description
 
 
-def foo(logs_divided_by_rules, project_name):
+def generate_final_string(logs_divided_by_rules):
 
     final_string = ""
     for rule_lst in logs_divided_by_rules:
@@ -39,18 +39,15 @@ def foo(logs_divided_by_rules, project_name):
                 problem_splitted = problem.split(" ")
                 final_problem = " - " + problem_splitted[1] + " FAIL"
 
-                # print(final_problem)
                 final_string += final_problem + "\n"
             elif "http" in desc:
-                # print("Documentation: ", desc)
                 final_string += "Documentation: " + desc + "\n"
             else:
-                # print(desc)
                 final_string += desc + "\n"
 
         final_string += "\n"
 
-    print(final_string)
+    return final_string
 
 
 def processing(project_name):
@@ -58,16 +55,10 @@ def processing(project_name):
         logs = file.readlines()
 
     # Initial Processing
-    # new_logs = [log.strip() for log in logs if log.strip()]
     new_logs = [log.strip() for log in logs]
 
-    # Pattern for matching the gcpdiag rules
-    # pattern = "[^\/]([a-z]){3}\/([A-Z])\w+\/[12][0-9]{3}\_\d{3}"
-
-    # print(new_logs)
     logs_divided_by_rules = []
     for i in range(len(new_logs)):
-
         rule_match = re.search(pattern, new_logs[i])
         if rule_match and i != len(new_logs) - 1 and "http" not in new_logs[i]:
             next_string = re.search(pattern, new_logs[i + 1])
@@ -83,13 +74,11 @@ def processing(project_name):
                     next_string = False
 
             logs_divided_by_rules.append(new_logs[i:unmatched_string_index])
-            # print(new_logs[i:unmatched_string_index], "\n")
         else:
             continue
 
-    # [print(log, "\n") for log in logs_divided_by_rules]
-
-    foo(logs_divided_by_rules, project_name)
+    final_string = generate_final_string(logs_divided_by_rules)
+    print(final_string)
 
 
 if __name__ == "__main__":

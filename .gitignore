@@ -6,3 +6,4 @@
 *.docx
 venv
 access_token.txt
+*.tmp
