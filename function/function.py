@@ -91,11 +91,7 @@ def logs_processing_driver(gcpdiag_logs):
 
 def execute_gcpdiag(project_name: str):
     command = f"./gcpdiag lint --project {project_name} --hide-ok"
-    # command = f"./gcpdiag lint --project {project_name}"
     logs = sp.getoutput(command)
-
-    # with open("sample_inputs/sample_output_with_ok.txt", "w+") as file:
-    #     file.write(logs)
 
     return logs
 
@@ -109,7 +105,7 @@ def main():
     final_string = logs_processing_driver(gcpdiag_logs)
     print(final_string)
 
-    return "ass"
+    return final_string
 
 
 if __name__ == "__main__":
