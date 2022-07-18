@@ -11,6 +11,16 @@ pattern = "([a-z]){3}\/([A-Z])\w+\/[12][0-9]{3}\_\d{3}"
 # Rules prefixes that are longer than standard 3
 lst_of_long_prefixes = ["apigee", "bigquery", "composer", "dataproc"]
 
+# Map with resources
+resource_map = {
+    "1": "apigee", "2": "bigquery", "3": "composer", "4": "dataproc", "5": "gae",
+    "6": "gcb", "7": "gce", "8": "gcf", "9": "gcs",
+    "10": "gke", "11": "iam", "12": "tpu", "13": "vpc"
+}
+
+# Needed metrics (will think about it)
+# metrics = ["ERR", "WARN"]
+
 
 def generate_rule_with_description(raw_rule_with_description):
     rule = re.search(pattern, raw_rule_with_description).group()
@@ -22,18 +32,32 @@ def generate_rule_with_description(raw_rule_with_description):
             final_prefix = long_prefix
 
     final_rule = rule.replace(rule_prefix, final_prefix)
+    print("final_rule ", final_rule)
     final_rule_with_description = final_rule + ": " + raw_rule_with_description.split(":")[1]
 
     return final_rule_with_description
 
 
-def generate_final_string(logs_divided_by_rules):
+def validate_the_resource(starting_rule, data):
+    needed_resource = resource_map[data["issue"]["fields"]["resource"]]
+    if needed_resource not in starting_rule:
+        return False
+
+    return True
+
+
+def generate_final_string(logs_divided_by_rules, data):
     final_string = ""
     for rule_lst in logs_divided_by_rules:
         if len(rule_lst) == 1:
             continue
 
         starting_rule = generate_rule_with_description(rule_lst[0])
+
+        validation = validate_the_resource(starting_rule, data)
+        if not validation:
+            continue
+
         final_string += starting_rule + "\n"
 
         for desc in rule_lst[1:]:
@@ -80,11 +104,11 @@ def processing(logs):
     return logs_divided_by_rules
 
 
-def logs_processing_driver(gcpdiag_logs):
+def logs_processing_driver(gcpdiag_logs, data):
     lst_of_logs = gcpdiag_logs.splitlines()
 
     logs_divided_by_rules = processing(lst_of_logs)
-    final_string = generate_final_string(logs_divided_by_rules)
+    final_string = generate_final_string(logs_divided_by_rules, data)
 
     return final_string
 
@@ -96,17 +120,17 @@ def execute_gcpdiag(project_name: str):
     return logs
 
 
-@app.route("/", methods=['POST'])
+@app.route("/hook", methods=['POST'])
 def main():
     data = request.json
     project_name = data["issue"]["fields"]["GCP Project ID"]
     gcpdiag_logs = execute_gcpdiag(project_name)
 
-    final_string = logs_processing_driver(gcpdiag_logs)
+    final_string = logs_processing_driver(gcpdiag_logs, data)
     print(final_string)
 
     return final_string
 
 
 if __name__ == "__main__":
-    app.run("localhost", port=5000)
+    app.run("127.0.0.1", port=5000, debug=True)
