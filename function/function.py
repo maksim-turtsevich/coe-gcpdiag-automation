@@ -32,7 +32,6 @@ def generate_rule_with_description(raw_rule_with_description):
             final_prefix = long_prefix
 
     final_rule = rule.replace(rule_prefix, final_prefix)
-    print("final_rule ", final_rule)
     final_rule_with_description = final_rule + ": " + raw_rule_with_description.split(":")[1]
 
     return final_rule_with_description
@@ -127,7 +126,6 @@ def main():
     gcpdiag_logs = execute_gcpdiag(project_name)
 
     final_string = logs_processing_driver(gcpdiag_logs, data)
-    print(final_string)
 
     return final_string
 
