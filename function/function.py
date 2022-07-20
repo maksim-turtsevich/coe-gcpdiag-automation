@@ -18,6 +18,9 @@ resource_map = {
     "10": "gke", "11": "iam", "12": "tpu", "13": "vpc"
 }
 
+# Auth key
+authentication_key = "/home/maksim_turtsevich/gcp-coe-msp-sandbox-9d73c756e918.json"
+
 # Needed metrics (will think about it)
 # metrics = ["ERR", "WARN"]
 
@@ -113,18 +116,24 @@ def logs_processing_driver(gcpdiag_logs, data):
 
 
 def execute_gcpdiag(project_name: str):
-    command = f"./gcpdiag lint --project {project_name} --hide-ok"
+    print("executing command")
+    command = f"sudo ./gcpdiag lint --project {project_name} --hide-ok --auth-key={authentication_key}"
     logs = sp.getoutput(command)
+    
+    print("Output of the command ", logs)
 
     return logs
 
 
-@app.route("/hook", methods=['POST'])
+@app.route("/", methods=['POST', 'GET'])
 def main():
+    if request.method == "GET":
+        return "Hello World!"
+    print("request: POST")
     data = request.json
     project_name = data["issue"]["fields"]["GCP Project ID"]
     gcpdiag_logs = execute_gcpdiag(project_name)
-
+    #return gcpdiag_logs
     final_string = logs_processing_driver(gcpdiag_logs, data)
 
     return final_string
