@@ -13,13 +13,15 @@ lst_of_long_prefixes = ["apigee", "bigquery", "composer", "dataproc"]
 
 # Map with resources
 resource_map = {
-    "1": "apigee", "2": "bigquery", "3": "composer", "4": "dataproc", "5": "gae",
-    "6": "gcb", "7": "gce", "8": "gcf", "9": "gcs",
-    "10": "gke", "11": "iam", "12": "tpu", "13": "vpc"
+    "Apigee": ["apigee"], "Big Data": ["bigquery", "composer", "dataproc"], "App Engine": ["gae"],
+    "CI/CD": ["gcb"], "Integration": ["gcb"], "Compute Engine": ["gce"], "Cloud Functions": ["gcf"],
+    "Storage": ["gcs"], "Kubernetes Engine": ["gke"], "IAM": ["iam"], "Ass": ["tpu"], "Networking": ["vpc"],
+    "All": "All"
 }
 
 # Auth key
-authentication_key = "/home/maksim_turtsevich/gcp-coe-msp-sandbox-9d73c756e918.json"
+authentication_key = "/home/maksi/gcp-coe-msp-sandbox-9d73c756e918.json"
+
 
 # Needed metrics (will think about it)
 # metrics = ["ERR", "WARN"]
@@ -37,12 +39,25 @@ def generate_rule_with_description(raw_rule_with_description):
     final_rule = rule.replace(rule_prefix, final_prefix)
     final_rule_with_description = final_rule + ": " + raw_rule_with_description.split(":")[1]
 
-    return final_rule_with_description
+    return final_rule_with_description, final_prefix
 
 
-def validate_the_resource(starting_rule, data):
-    needed_resource = resource_map[data["issue"]["fields"]["resource"]]
-    if needed_resource not in starting_rule:
+def extract_mentioned_resources(lst_of_resources):
+    all_prefixes = []
+
+    for field in lst_of_resources:
+        all_prefixes += resource_map.get(field, [])
+
+    all_prefixes = set(all_prefixes)
+    print(all_prefixes)
+
+    return all_prefixes
+
+
+def validate_the_resource(starting_rule, data, prefix):
+    lst_of_resources = data["issue"]["fields"]["resource"]
+    all_prefixes = extract_mentioned_resources(lst_of_resources)
+    if prefix not in all_prefixes and lst_of_resources[0] != "All":  # Testing thing will be changed later
         return False
 
     return True
@@ -51,12 +66,11 @@ def validate_the_resource(starting_rule, data):
 def generate_final_string(logs_divided_by_rules, data):
     final_string = ""
     for rule_lst in logs_divided_by_rules:
-        if len(rule_lst) == 1:
+        if len(rule_lst) == 1:  # Last item without filters contains two elements in the list [rule, ""], fix it
             continue
 
-        starting_rule = generate_rule_with_description(rule_lst[0])
-
-        validation = validate_the_resource(starting_rule, data)
+        starting_rule, prefix_for_validation = generate_rule_with_description(rule_lst[0])
+        validation = validate_the_resource(starting_rule, data, prefix_for_validation)
         if not validation:
             continue
 
@@ -75,6 +89,11 @@ def generate_final_string(logs_divided_by_rules, data):
                 final_string += desc + "\n"
 
         final_string += "\n"
+
+    # If final_string will be empty (all resources passed) the following string will be outputted
+    if not final_string:
+        final_string = "Unfortunately gcpdiag doesn't support the affected resources or he didn\'t find the ones " \
+                       "mentioned! "
 
     return final_string
 
@@ -118,8 +137,9 @@ def logs_processing_driver(gcpdiag_logs, data):
 def execute_gcpdiag(project_name: str):
     print("executing command")
     command = f"sudo ./gcpdiag lint --project {project_name} --hide-ok --auth-key={authentication_key}"
+    # command = f"./gcpdiag lint --project {project_name} --hide-ok"
     logs = sp.getoutput(command)
-    
+
     print("Output of the command ", logs)
 
     return logs
@@ -129,11 +149,12 @@ def execute_gcpdiag(project_name: str):
 def main():
     if request.method == "GET":
         return "Hello World!"
+
     print("request: POST")
     data = request.json
     project_name = data["issue"]["fields"]["GCP Project ID"]
+
     gcpdiag_logs = execute_gcpdiag(project_name)
-    #return gcpdiag_logs
     final_string = logs_processing_driver(gcpdiag_logs, data)
 
     return final_string
