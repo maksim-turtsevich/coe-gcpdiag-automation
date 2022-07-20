@@ -18,11 +18,15 @@ RUN pip install -r requirements.txt &&\
 COPY . /app
 RUN ls -l
 
+# Checking vars
+#RUN id -u &&\
+#    id -n -u &&\
+#    id -n -g
 #RUN curl https://gcpdiag.dev/gcpdiag.sh >gcpdiag &&\
 #    chmod +x gcpdiag &&\
 #    ./gcpdiag
 
-RUN ./gcpdiag
+#RUN ./gcpdiag
 # Handling script issues
 #RUN sed -i 's/\r$//' ./gcpdiag
 
@@ -32,6 +36,7 @@ RUN ./gcpdiag
 
 # configure the container to run in an executed manner
 
+EXPOSE 5000
 
 ENTRYPOINT [ "python" ]
 CMD ["function.py" ]
