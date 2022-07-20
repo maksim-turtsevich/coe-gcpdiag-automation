@@ -133,8 +133,16 @@ if ! AUTH_KEY_MOUNT=$(handle_mount_path "$AUTH_KEY"); then
     exit 1
 fi
 
+echo "TTY: $USE_TTY"
+echo "Config mount: $CONFIG_MOUNT"
+echo "Auth mount mount: $AUTH_KEY_MOUNT"
+echo "Docker image: $DOCKER_IMAGE:$DOCKER_IMAGE_VERSION"
+echo "Args $ARGS"
+echo "Home: $HOME"
+echo "AUTH_TOKEN: $GOOGLE_AUTH_TOKEN"
+
 # shellcheck disable=SC2086
-exec "$RUNTIME" run "$USE_TTY" \
+exec "$RUNTIME" run -i \
   --rm \
   -u "$(id -u):$(id -g)" \
   -e "USER=$(id -n -u)" \
