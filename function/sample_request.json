@@ -8,8 +8,8 @@
     "fields": {
       "summary": "I feel the need for speed",
       "created": "2009-12-16T23:46:10.612-0600",
-      "GCP Project ID": "fp-engineering-staging",
-      "resource": ["Big Data"],
+      "GCP Project ID": "gcp-coe-msp-sandbox",
+      "resource": ["Compute Engine"],
       "description": "Make the issue nav load 10x faster",
       "labels": [
         "UI",
