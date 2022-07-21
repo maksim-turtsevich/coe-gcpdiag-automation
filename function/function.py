@@ -24,7 +24,7 @@ resource_map = {
 }
 
 # Auth key
-authentication_key = "/home/maksi/gcp-coe-msp-sandbox-9d73c756e918.json"
+authentication_key = "/home/maksim_turtsevich/gcp-coe-msp-sandbox-9d73c756e918.json"
 
 # Jira Authentication
 options = {'server': r"https://devoteamgcloud.atlassian.net/"}
@@ -73,6 +73,7 @@ def validate_the_resource(starting_rule, data, prefix):
 
 def generate_final_string(logs_divided_by_rules, data):
     final_string = ""
+    rules_count = 1
     for rule_lst in logs_divided_by_rules:
         if len(rule_lst) == 1:  # Last item without filters contains two elements in the list [rule, ""], fix it
             continue
@@ -82,7 +83,8 @@ def generate_final_string(logs_divided_by_rules, data):
         if not validation:
             continue
 
-        final_string += starting_rule + "\n"
+        final_string += str(rules_count) + ")" + " " + starting_rule + "\n"
+        rules_count += 1
 
         for desc in rule_lst[1:]:
             if "FAIL" in desc:
@@ -96,7 +98,7 @@ def generate_final_string(logs_divided_by_rules, data):
             else:
                 final_string += desc + "\n"
 
-        final_string += "\n"
+        final_string += "\n\n"
 
     # If final_string will be empty (all resources passed) the following string will be outputted
     if not final_string:
@@ -144,8 +146,8 @@ def logs_processing_driver(gcpdiag_logs, data):
 
 def execute_gcpdiag(project_name: str):
     print("executing command")
-    # command = f"sudo ./gcpdiag lint --project {project_name} --hide-ok --auth-key={authentication_key}"
-    command = f"./gcpdiag lint --project {project_name} --hide-ok"
+    command = f"sudo ./gcpdiag lint --project {project_name} --hide-ok --auth-key={authentication_key}"
+    # command = f"./gcpdiag lint --project {project_name} --hide-ok"
     logs = sp.getoutput(command)
 
     print("Output of the command ", logs)
