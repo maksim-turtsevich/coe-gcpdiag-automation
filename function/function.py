@@ -1,7 +1,11 @@
 from flask import Flask, request
 import gunicorn
+
 import subprocess as sp
 import re
+
+from jira import JIRA
+import os
 
 app = Flask(__name__)
 
@@ -21,6 +25,10 @@ resource_map = {
 
 # Auth key
 authentication_key = "/home/maksi/gcp-coe-msp-sandbox-9d73c756e918.json"
+
+# Jira Authentication
+options = {'server': r"https://devoteamgcloud.atlassian.net/"}
+jira = JIRA(basic_auth=("maksim.turtsevich@devoteam.com", os.getenv("jira_token")), options=options)
 
 
 # Needed metrics (will think about it)
@@ -136,13 +144,18 @@ def logs_processing_driver(gcpdiag_logs, data):
 
 def execute_gcpdiag(project_name: str):
     print("executing command")
-    command = f"sudo ./gcpdiag lint --project {project_name} --hide-ok --auth-key={authentication_key}"
-    # command = f"./gcpdiag lint --project {project_name} --hide-ok"
+    # command = f"sudo ./gcpdiag lint --project {project_name} --hide-ok --auth-key={authentication_key}"
+    command = f"./gcpdiag lint --project {project_name} --hide-ok"
     logs = sp.getoutput(command)
 
     print("Output of the command ", logs)
 
     return logs
+
+
+def submit_to_jira(name_of_the_ticket, final_string):
+    comment = jira.add_comment(name_of_the_ticket, final_string, visibility={'key': 'sd.public.comment'},
+                               is_internal=True)
 
 
 @app.route("/", methods=['POST', 'GET'])
@@ -156,6 +169,10 @@ def main():
 
     gcpdiag_logs = execute_gcpdiag(project_name)
     final_string = logs_processing_driver(gcpdiag_logs, data)
+
+    # Working with Jira
+    name_of_the_ticket = data["issue"]["key"]
+    submit_to_jira(name_of_the_ticket, final_string)
 
     return final_string
 
