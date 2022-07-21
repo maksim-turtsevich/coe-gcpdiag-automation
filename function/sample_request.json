@@ -4,12 +4,12 @@
   "issue": {
     "id": "99291",
     "self": "https://jira.atlassian.com/rest/api/2/issue/99291",
-    "key": "JRA-20002",
+    "key": "DGS-137",
     "fields": {
       "summary": "I feel the need for speed",
       "created": "2009-12-16T23:46:10.612-0600",
       "GCP Project ID": "fp-engineering-staging",
-      "resource": ["Kubernetes Engine", "Big Data"],
+      "resource": ["Big Data"],
       "description": "Make the issue nav load 10x faster",
       "labels": [
         "UI",
