@@ -8,3 +8,10 @@ venv
 access_token.txt
 *.tmp
 __pycache__
+sample_inputs
+
+# Cleaning the repo
+Dockerfile
+.dockerignore
+processing.py
+sample
