@@ -23,7 +23,8 @@ resource_map = {
 }
 
 # Auth key
-authentication_key = "/home/maksim_turtsevich/gcp-coe-msp-sandbox-9d73c756e918.json"
+# authentication_key = "/home/maksim_turtsevich/gcp-coe-msp-sandbox-9d73c756e918.json"
+authentication_key = "/app/gcp-coe-msp-sandbox-9d73c756e918.json"
 
 # Jira Authentication
 options = {'server': r"https://devoteamgcloud.atlassian.net/"}
@@ -250,8 +251,8 @@ def execute_gcpdiag(project_name: str):
     """
 
     # Command for running "gcpdiag"
-    # command = f"sudo ./gcpdiag lint --project {project_name} --hide-ok --auth-key={authentication_key}"
-    command = f"./gcpdiag lint --project {project_name} --hide-ok"
+    command = f"sudo ./gcpdiag lint --project {project_name} --hide-ok --auth-key={authentication_key}"
+    # command = f"./gcpdiag lint --project {project_name} --hide-ok"
 
     # Storing the output of the command
     logs = sp.getoutput(command)
