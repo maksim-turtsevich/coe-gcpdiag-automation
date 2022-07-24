@@ -251,7 +251,8 @@ def execute_gcpdiag(project_name: str):
     """
 
     # Command for running "gcpdiag"
-    command = f"sudo ./gcpdiag lint --project {project_name} --hide-ok --auth-key={authentication_key}"
+    # command = f"sudo ./gcpdiag lint --project {project_name} --hide-ok --auth-key={authentication_key}"
+    command = f"sudo ./gcpdiag lint --project {project_name} --hide-ok --auth-adc"
     # command = f"./gcpdiag lint --project {project_name} --hide-ok"
 
     # Storing the output of the command
