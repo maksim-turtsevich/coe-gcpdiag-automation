@@ -90,6 +90,15 @@ def extract_mentioned_resources(lst_of_resources):
     return all_prefixes
 
 
+def create_list_of_resources(lst_of_dicts):
+    lst_of_resources = []
+
+    for dct in lst_of_dicts:
+        lst_of_resources.append(dct["value"])
+
+    return lst_of_resources
+
+
 def validate_the_resource(starting_rule, data, prefix):
     """
     Function that validates the rule inputted (if it should
@@ -103,7 +112,12 @@ def validate_the_resource(starting_rule, data, prefix):
     Returns:
         bool
     """
-    lst_of_resources = data["issue"]["fields"]["resource"]
+    lst_of_dicts = data["issue"]["fields"]["customfield_10141"]
+    if not lst_of_dicts:
+        return True
+
+    lst_of_resources = create_list_of_resources(lst_of_dicts)
+
     all_prefixes = extract_mentioned_resources(lst_of_resources)
     if prefix not in all_prefixes and lst_of_resources[0] != "All":  # Testing thing will be changed later
         return False
@@ -251,9 +265,9 @@ def execute_gcpdiag(project_name: str):
     """
 
     # Command for running "gcpdiag"
-    command = f"sudo ./gcpdiag lint --project {project_name} --hide-ok --auth-key={authentication_key}"
+    # command = f"sudo ./gcpdiag lint --project {project_name} --hide-ok --auth-key={authentication_key}"
     # command = f"sudo ./gcpdiag lint --project {project_name} --hide-ok --auth-adc"
-    # command = f"./gcpdiag lint --project {project_name} --hide-ok"
+    command = f"./gcpdiag lint --project {project_name} --hide-ok"
 
     # Storing the output of the command
     logs = sp.getoutput(command)
@@ -295,7 +309,10 @@ def main():
 
     # Extracting the data from the request
     data = request.json
-    project_name = data["issue"]["fields"]["GCP Project ID"]
+    # print(data)
+    # return data
+
+    project_name = data["issue"]["fields"]["customfield_10169"]
 
     # Running gcpdiag command and running logs_processing_driver method
     gcpdiag_logs = execute_gcpdiag(project_name)
